@@ -27,7 +27,7 @@ class DistributeCustom(unittest.TestCase):
 
         # 登录系统
         loginpage = LoginPage(cls.driver)
-        loginpage.type_user('15801224098')  # 调用页面对象中的方法
+        loginpage.type_user('18410937475')  # 调用页面对象中的方法
         loginpage.type_pass('yq111111')
         # logger.info('ceshi')
         cls.driver.find_element_by_id('loginBtn').click()
@@ -49,7 +49,7 @@ class DistributeCustom(unittest.TestCase):
 
         logger.info('进入客户管理页面')
         time.sleep(2)
-        self.driver.find_element_by_xpath("//*[@id='frameHeader']/div[3]/div[3]/span").click()
+        self.driver.find_element_by_xpath("//*[@id='frameHeader']//span[contains(text(),'客户管理')]").click()
         time.sleep(2)
         logger.info("开始分配客户")
 
