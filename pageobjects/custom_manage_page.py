@@ -15,6 +15,7 @@ class AddPage(BasePage):
     custom_type_value = "SMALL"
     # 保存
     save = 'xpath=>//*[@id="promptModal"]//*/button[text()="保存"]'
+    save_success_loc = 'id=>noticeModal'
 
     def add_custom(self):
         self.click(self.add_button)
@@ -23,6 +24,17 @@ class AddPage(BasePage):
     def custom_detail(self, text):
         self.type(self.custom_name, text)
         self.select(self.custom_type, self.custom_type_value)
+
+    def custom_save(self):
+        self.click(self.save)
+
+    def save_success(self):
+        a = self.find_element(self.save_success_loc).get_attribute('style')
+        if 'block' in a:
+            print 'aaa'
+            return True
+        else:
+            return False
 
 
 class DisPage(BasePage):
@@ -46,7 +58,7 @@ class DisPage(BasePage):
     def select_account(self):
         self.click(self.distri_account)
         self.clear(self.accountant)
-        self.type(self.accountant, '15801224098')
+        self.type(self.accountant, '18410937475')
         self.enter(self.accountant)
         self.sleep(2)
         self.click(self.select_user)
