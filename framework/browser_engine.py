@@ -8,7 +8,6 @@ logger = Logger(logger="BrowserEngine").getlog()
 
 
 class BrowserEngine(object):
-
     dir = os.path.dirname(os.path.abspath('.'))
     chrome_driver_path = dir + '/tools/chromedriver.exe'
     ie_driver_path = dir + '/tools/IEDriverServer.exe'
@@ -27,7 +26,6 @@ class BrowserEngine(object):
         logger.info("You had select %s browser." % browser)
         url = config.get("testServer", "URL")
         logger.info("The test server url is: %s" % url)
-
 
         if browser == "Firefox":
             driver = webdriver.Firefox()
@@ -50,7 +48,3 @@ class BrowserEngine(object):
     def quit_browser(self):
         logger.info("Now, Close and quit the browser.")
         self.driver.quit()
-
-
-
-

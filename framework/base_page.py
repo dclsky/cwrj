@@ -3,9 +3,13 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 import os.path
 from framework.logger import Logger
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf-8')  # 如果不添加以上三行代码，xpath如果表达式包括中文，就会报错，python 2.x 默认
 # string 类型是assic类型，在xpath拆分的时候，报codec can't decode byte 0xe4 in position 17: ordinal not in range(128)
@@ -41,7 +45,7 @@ class BasePage(object):
         self.driver.implicitly_wait(seconds)
         logger.info("wait for %d seconds." % seconds)
 
-    #页面跳转后定位到当前页
+    # 页面跳转后定位到当前页
     def current(self):
         self.driver.current_window_handle
         logger.info("switch to current page")
@@ -92,7 +96,7 @@ class BasePage(object):
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: %s" % e)
 
-                self.get_windows_img()   # take screenshot
+                self.get_windows_img()  # take screenshot
         elif selector_by == "n" or selector_by == 'name':
             element = self.driver.find_element_by_name(selector_value)
         elif selector_by == "c" or selector_by == 'class_name':
@@ -107,7 +111,7 @@ class BasePage(object):
             try:
                 element = self.driver.find_element_by_xpath(selector_value)
                 logger.info("Had find the element \' %s \' successful "
-                                "by %s via value: %s" % (element.text, selector_by, selector_value))
+                            "by %s via value: %s" % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: %s" % e)
                 self.get_windows_img()
@@ -135,10 +139,10 @@ class BasePage(object):
         s1 = self.find_element(selector)
         s2 = Select(s1)
         try:
-            logger.info("选择纳税人类型")
+            logger.info("列表选择")
             s2.select_by_value(value)
         except NameError as e:
-            logger.error("选择纳税人类型错误")
+            logger.error("选择类型错误")
 
     # 清除列表框
     def clear(self, selector):
@@ -159,12 +163,13 @@ class BasePage(object):
             logger.info("开始点击")
             el.click()
             logger.info("点击完成")
-            logger.info("The element \' %s \' was clicked." % el.text)
-            time.sleep(5)
+            # logger.info("The element \' %s \' was clicked." % el.text)
+            time.sleep(1)
         except NameError as e:
             logger.info('nameerror')
             # logger.error("Failed to click the element with %s" % e)
             logger.error(e)
+
     # 或者网页标题
     def get_page_title(self):
         logger.info("Current page title is %s" % self.driver.title)
@@ -176,7 +181,14 @@ class BasePage(object):
         logger.info("Sleep for %d seconds" % seconds)
 
     # 回车
-    def enter(self,selector):
+    def enter(self, selector):
         logger.info("回车")
         el = self.find_element(selector)
         el.send_keys(Keys.ENTER)
+
+    # 等待元素出现，若出现返回True，否则False；点击保存或删除等，提示信息中包含text_name即认为元素出现(element为class_name值）
+    def disappeare(self, element, text_name):
+        is_disappeared = WebDriverWait(self.driver, 15, 0.5).until(
+            EC.text_to_be_present_in_element((By.CLASS_NAME, element), text_name))
+        logger.info("保存是否成功:%s" % is_disappeared)
+        return is_disappeared

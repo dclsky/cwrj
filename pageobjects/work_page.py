@@ -4,13 +4,22 @@ from framework.base_page import BasePage
 
 class WorkPage(BasePage):
     # 新建账簿
-    search_custom = "xpath=>//*[@placeholder='请输入客户名称，按回车键查询']"
+    search_custom = "xpath=>//*[@placeholder='请输入客户编号/名称，按回车键查询']"
     new_account = "xpath=>//*[@id='frameContent']/div[2]/div[2]/div[1]/div/div[1]/div[6]/button[1]"
+    custom_manage = "xpath=>//*[@id='frameHeader']//span[contains(text(),'客户管理')]"
+    # 进入账簿按钮
+    enter_account_loc = "xpath=>//*[@id='frameContent']//button[contains(text(),'进入账簿')]"
 
-    def enter_account(self, custom_name):
+    # 进入客户管理页面
+    def enter_custom(self):
+        self.click(self.custom_manage)
+
+    # 查找指定的账簿
+    def search_account(self, custom_name):
         self.type(self.search_custom, custom_name)
         self.enter(self.search_custom)
 
+    # 点击新建账簿
     def click_new(self):
         self.click(self.new_account)
 
@@ -40,3 +49,7 @@ class WorkPage(BasePage):
         self.click(self.month)
         self.click(self.month_value)
         self.click(self.account_save)
+
+    # 进入所选账簿
+    def enter_account(self):
+        self.click(self.enter_account_loc)

@@ -15,7 +15,8 @@ class AddPage(BasePage):
     custom_type_value = "SMALL"
     # 保存
     save = 'xpath=>//*[@id="promptModal"]//*/button[text()="保存"]'
-    save_success_loc = 'id=>noticeModal'
+
+    # save_success_loc = 'id=>noticeModal'
 
     def add_custom(self):
         self.click(self.add_button)
@@ -27,14 +28,9 @@ class AddPage(BasePage):
 
     def custom_save(self):
         self.click(self.save)
-
-    def save_success(self):
-        a = self.find_element(self.save_success_loc).get_attribute('style')
-        if 'block' in a:
-            print 'aaa'
-            return True
-        else:
-            return False
+        # 判断是否保存成功
+        if self.disappeare(u'保存成功'):
+            return 1
 
 
 class DisPage(BasePage):
@@ -55,6 +51,7 @@ class DisPage(BasePage):
         self.click(self.distribute_button)
         self.sleep(2)
 
+    # 选择要分配的记账会计
     def select_account(self):
         self.click(self.distri_account)
         self.clear(self.accountant)
@@ -62,3 +59,9 @@ class DisPage(BasePage):
         self.enter(self.accountant)
         self.sleep(2)
         self.click(self.select_user)
+
+    # 点击分配按钮，进行分配
+    def distri_click(self):
+        self.click(self.distri_button)
+        if self.disappeare('notice-body', u'成功'):
+            return 1

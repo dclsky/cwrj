@@ -9,7 +9,7 @@ logger = Logger(logger="cwrj_login_page").getlog()
 
 
 class CwrjLogin(unittest.TestCase):
-
+    """登录测试"""
     @classmethod
     def setUpClass(cls):
         """
@@ -29,25 +29,17 @@ class CwrjLogin(unittest.TestCase):
         cls.driver.quit()
 
     def test_alogin(self):
-        """
-        这里一定要test开头，把测试逻辑代码封装到一个test开头的方法里。
-        :return:
-        """
+        """正常登录"""
         loginpage = LoginPage(self.driver)
-        loginpage.type_user('15801224098')  # 调用页面对象中的方法
-        loginpage.type_pass('yq111111')
-        # logger.info('ceshi')
-        self.driver.find_element_by_id('loginBtn').click()
-        # loginpage.click_login()     #调用页面对象类中的点击搜索按钮方法
+        loginpage.user_login()
+
         self.driver.get_screenshot_as_png()
 
         loginpage.get_windows_img()  # 调用基类截图方法
-        try:
-            assert '易桥财务管家' in loginpage.get_page_title()  # 调用页面对象继承基类中的获取页面标题方法
-            logger.info("登录成功")
-            print ('Test Pass.')
-        except Exception as e:
-            print ('Test Fail.', e)
+        self.assertEqual(u'易桥财务管家', loginpage.get_page_title())  # 调用页面对象继承基类中的获取页面标题方法
+        logger.info("登录成功")
+        # except Exception as e:
+        #     print ('Test Fail.', e)
 
     # def test_search2(self):
     #     homepage = HomePage(self.driver)

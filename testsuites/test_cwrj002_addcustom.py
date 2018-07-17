@@ -14,7 +14,9 @@ from framework.logger import Logger
 
 logger = Logger(logger="custom_manage_page").getlog()
 
+
 class AddCustom(unittest.TestCase):
+    """添加客户"""
     @classmethod
     def setUpClass(cls):
         """
@@ -26,10 +28,8 @@ class AddCustom(unittest.TestCase):
 
         # 登录系统
         loginpage = LoginPage(cls.driver)
-        loginpage.type_user('15801224098')  # 调用页面对象中的方法
-        loginpage.type_pass('yq111111')
-        # logger.info('ceshi')
-        cls.driver.find_element_by_id('loginBtn').click()
+        loginpage.user_login()
+        time.sleep(3)
 
     @classmethod
     def tearDownClass(cls):
@@ -41,29 +41,18 @@ class AddCustom(unittest.TestCase):
         cls.driver.quit()
 
     def test_add_custom(self):
-        """
-        添加新客户
-        :return: 
-        """
+        """添加新客户"""
 
         logger.info('进入客户管理页面')
-        time.sleep(10)
-        self.driver.find_element_by_xpath("//*[@id='frameHeader']/div[3]/div[3]/span").click()
+        workpage = WorkPage(self.driver)
+        workpage.enter_custom()
 
         addpage = AddPage(self.driver)
         addpage.add_custom()
         addpage.custom_detail(u'自动化测试客户')
-        self.driver.find_element_by_xpath('//*[@id="promptModal"]//*/button[text()="保存"]').click()
+        result = addpage.custom_save()
+        self.assertTrue(result), u'保存失败'
+
+        # self.driver.find_element_by_xpath('//*[@id="promptModal"]//*/button[text()="保存"]').click()
         logger.info("新增客户成功！")
         addpage.get_windows_img()  # 调用基类截图方法
-
-        # table = self.driver.find_element_by_class_name('table')
-        # table_rows = table.find_elements_by_tag_name('tr')
-        # print u"客户数量：%s"%len(table_rows)
-        # # logger.info(len(table_rows))
-        # for table_row in table_rows:
-        #     a = table_row.find_elements_by_tag_name('td')
-        #     logger.info(a[2].text)
-        q = self.driver.find_element_by_xpath("//*[@id='frameContent']/div[2]/div[2]/div[2]/span")
-        logger.info("客户数量：%s"%len(q))
-

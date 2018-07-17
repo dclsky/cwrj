@@ -9,9 +9,11 @@ from framework.browser_engine import BrowserEngine
 from pageobjects.work_page import WorkPage
 from pageobjects.cwrj_login_page import LoginPage
 import time
+from testsuites.test_cwrj001_login import CwrjLogin
 
 
 class NewAccount(unittest.TestCase):
+    """新建账簿"""
     @classmethod
     def setUpClass(cls):
         """
@@ -23,10 +25,7 @@ class NewAccount(unittest.TestCase):
 
         # 登录系统
         loginpage = LoginPage(cls.driver)
-        loginpage.type_user('15801224098')  # 调用页面对象中的方法
-        loginpage.type_pass('yq111111')
-        # logger.info('ceshi')
-        cls.driver.find_element_by_id('loginBtn').click()
+        loginpage.user_login()
 
     @classmethod
     def tearDownClass(cls):
@@ -38,13 +37,10 @@ class NewAccount(unittest.TestCase):
         cls.driver.quit()
 
     def test_new_account(self):
-        """
-        新建账簿
-        :return: 
-        """
+        """新建账簿"""
 
         workpage = WorkPage(self.driver)
-        workpage.enter_account(u'自动化测试客户')
+        workpage.search_account(u'自动化测试客户')
         time.sleep(2)
         workpage.click_custom()
         workpage.account_detail()

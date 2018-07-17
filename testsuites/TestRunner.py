@@ -4,9 +4,10 @@ import os
 import unittest
 import time
 
+# 登录测试
 
 # 设置报告文件保存路径
-report_path = os.path.dirname(os.path.abspath('.')) + '/test_report/'
+report_path = os.path.dirname(os.path.abspath('.')) + '\\test_report\\'
 # 获取系统当前时间
 now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
 
@@ -15,7 +16,7 @@ HtmlFile = report_path + now + "HTMLtemplate.html"
 fp = file(HtmlFile, "wb")
 
 # 构建suite
-suite = unittest.TestLoader().discover("testsuites",pattern="test_cwrj004*.py")
+suite = unittest.TestLoader().discover("testsuites",pattern="test_cwrj005*.py")
 
 if __name__ == '__main__':
 

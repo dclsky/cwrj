@@ -23,3 +23,8 @@ class LoginPage(BasePage):
     def call_password(self):
         self.click(self.call_pass)
         self.sleep(2)
+
+    def user_login(self, name='18410937475', passwd='yq111111'):
+        self.type_user(name)
+        self.type_pass(passwd)
+        self.click_login()
