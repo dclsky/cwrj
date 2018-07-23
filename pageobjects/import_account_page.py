@@ -62,3 +62,16 @@ class ImportAccountPage(BasePage):
 
     def click_three_import(self):
         self.click(self.three_button)
+
+    # 三位账簿导入
+    def file_three_upload(self, filename):
+        self.click(self.three_button)
+        time.sleep(3)
+        self.click(self.confirm_button)
+        time.sleep(3)
+
+        # 导入三位账簿文件
+        os.system('%s %s' % (self.import_tool, filename))
+        if self.disappeare('notice-body',u'文件上传成功'):
+            return 1
+
